@@ -2,7 +2,9 @@
 
 A demo to show how to build a WebXR experiences.
 
-![Watch the video](webxr-demo.mp4)
+https://github.com/user-attachments/assets/fc7ed3dc-2823-49cc-ad73-59754b211a23
+
+[Video source](webxr-demo.mp4)
 
 ## Getting started
 
