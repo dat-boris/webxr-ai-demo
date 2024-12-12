@@ -11,7 +11,7 @@ function App() {
   const {
     startMediaRecording, stopMediaRecording, recordedText, chatReply, isRecording, isProcessing
   } = useWhispherChat({
-    "enableOculusHack": true,
+    "enableOculusHack": false,
   });
 
   return (
