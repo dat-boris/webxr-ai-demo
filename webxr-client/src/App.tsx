@@ -18,7 +18,7 @@ function App() {
         </XR>
       </Canvas>
       <h1>A simple WebXR demo.</h1>
-      <button onClick={() => xrStore.enterVR()}>Enter VR</button>
+      <button onClick={() => xrStore.enterAR()}>Enter AR</button>
     </>
   )
 }
