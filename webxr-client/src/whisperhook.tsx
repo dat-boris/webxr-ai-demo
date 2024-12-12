@@ -13,7 +13,8 @@ const getOpenAIKey = () => {
 // see `server/package.json:ngrok` for the domain.
 const ImageUrl = "https://webxrdemo.ngrok.dev/image";
 
-export function useWhispherChat() {
+export function useWhispherChat(options: { enableOculusHack?: boolean } = {}) {
+
     const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
     const [recordedText, setRecordedText] = useState<string>('');
@@ -22,6 +23,22 @@ export function useWhispherChat() {
 
     const chatWithGPT = async (message: string) => {
       const apiKey = getOpenAIKey();
+
+      const userContent = [
+        {
+          "type": "text",
+          "text": message
+        }
+      ];
+
+      if (options.enableOculusHack) {
+        userContent.push({
+          "type": "image_url",
+          "image_url": {
+            "url": ImageUrl
+          }
+        });
+      }
 
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -32,19 +49,7 @@ export function useWhispherChat() {
       body: JSON.stringify({
         model: 'gpt-4o',
         messages: [
-          { role: 'user', content: [
-            {
-              "type": "text",
-              "text": message
-            },
-            {
-              "type": "image_url",
-              "image_url": {
-                "url": ImageUrl
-              }
-            }
-            ]
-          },
+          { role: 'user', content: userContent},
         ]
       })
       });
