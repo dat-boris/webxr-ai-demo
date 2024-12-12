@@ -37,7 +37,7 @@ function setupIntervalSnapshot(socket) {
         postJsonToWebSocket(socket, {
             image: getVideoURL()
         });
-    }, 3000);
+    }, 1000);
     console.log('Interval set up:', intervalId);
 }
 function setupWebSocket(successCallback) {

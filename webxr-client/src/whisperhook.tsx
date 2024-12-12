@@ -31,8 +31,21 @@ export function useWhispherChat() {
       },
       body: JSON.stringify({
         model: 'gpt-4o',
-        messages: [{ role: 'user', content: message }],
-        max_tokens: 150
+        messages: [
+          { role: 'user', content: [
+            {
+              "type": "text",
+              "text": message
+            },
+            {
+              "type": "image_url",
+              "image_url": {
+                "url": ImageUrl
+              }
+            }
+            ]
+          },
+        ]
       })
       });
 
