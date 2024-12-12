@@ -1,21 +1,53 @@
 import { useRef, useState } from 'react'
 
+const getOpenAIKey = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const apiKey = urlParams.get('ok');
+  if (!apiKey) {
+    throw new Error('API key is missing from the URL');
+  }
+  return apiKey;
+}
+
 export function useWhispherChat() {
     const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
     const [recordedText, setRecordedText] = useState<string>('');
+    const [chatReply, setChatReply] = useState<string>('');
+
+    const chatWithGPT = async (message: string) => {
+      const apiKey = getOpenAIKey();
+
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o',
+        messages: [{ role: 'user', content: message }],
+        max_tokens: 150
+      })
+      });
+
+      try {
+        const result = await response.json();
+        setChatReply(result.choices[0].message.content);
+        return result.choices[0].message.content;
+      } catch (error) {
+        console.error('Failed to fetch chat reply', error);
+        setChatReply(`Error: ${error}`);
+        return '';
+      }
+    };
 
     const onTranscribe = async (audioBlob: Blob) => {
       const formData = new FormData();
       formData.append('file', audioBlob, 'audio.webm');
       formData.append('model', 'whisper-1');
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const apiKey = urlParams.get('ok');
-      if (!apiKey) {
-        throw new Error('API key is missing from the URL');
-      }
-
+      const apiKey = getOpenAIKey();
       const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
         method: 'POST',
         headers: {
@@ -26,6 +58,7 @@ export function useWhispherChat() {
 
       const result = await response.json();
       setRecordedText(result.text);
+      chatWithGPT(result.text);
     };
 
     const startMediaRecording = async () => {
@@ -58,6 +91,7 @@ export function useWhispherChat() {
     return {
       startMediaRecording,
       stopMediaRecording,
-      recordedText
+      recordedText,
+      chatReply
     }
 }

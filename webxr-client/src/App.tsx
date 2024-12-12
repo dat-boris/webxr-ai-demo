@@ -6,7 +6,7 @@ import { useWhispherChat } from './whisperhook'
 const xrStore = createXRStore();
 
 function App() {
-  const { startMediaRecording, stopMediaRecording, recordedText } = useWhispherChat();
+  const { startMediaRecording, stopMediaRecording, recordedText, chatReply } = useWhispherChat();
 
   return (
     <>
@@ -25,6 +25,7 @@ function App() {
         <button onClick={() => startMediaRecording()}>Start Recording</button>
         <button onClick={() => stopMediaRecording()}>Stop</button>
         <pre>{recordedText}</pre>
+        <pre>{chatReply}</pre>
       </div>
     </>
   )
