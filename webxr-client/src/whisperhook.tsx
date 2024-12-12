@@ -19,6 +19,7 @@ export function useWhispherChat(options: { enableOculusHack?: boolean } = {}) {
     const audioChunksRef = useRef<Blob[]>([]);
     const [recordedText, setRecordedText] = useState<string>('');
     const [chatReply, setChatReply] = useState<string>('');
+    const [isRecording, setIsRecording] = useState<boolean>(false);
     const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
     const chatWithGPT = async (message: string) => {
@@ -92,6 +93,7 @@ export function useWhispherChat(options: { enableOculusHack?: boolean } = {}) {
         return;
       }
       setIsProcessing(true);
+      setIsRecording(true);
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const recorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
 
@@ -100,6 +102,7 @@ export function useWhispherChat(options: { enableOculusHack?: boolean } = {}) {
       };
 
       recorder.onstop = () => {
+        setIsRecording(false);
         if (audioChunksRef.current.length === 0) {
           throw new Error('No audio data available');
         }
@@ -116,6 +119,7 @@ export function useWhispherChat(options: { enableOculusHack?: boolean } = {}) {
       if (mediaRecorder) {
         mediaRecorder.stop();
       }
+      setIsRecording(false);
     };
 
     return {
@@ -123,6 +127,7 @@ export function useWhispherChat(options: { enableOculusHack?: boolean } = {}) {
       stopMediaRecording,
       recordedText,
       chatReply,
+      isRecording,
       isProcessing
     }
 }

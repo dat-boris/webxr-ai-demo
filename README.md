@@ -29,12 +29,6 @@ https://localhost:5173/?ok=<OpenAI APIkey>
 
 > Only avaliable if you are using Oculus Quest
 
-> [!WARNING]
-> the image from the server is publically accessible - you should at least
-> change the ngrok server URL in:
-> - server/package.json
-> - webxr-client/src/whisperhook.tsx
-
 Open your local server by:
 
 ```
@@ -44,9 +38,17 @@ node server.js
 
 Which will run the local server.
 
+> [!WARNING]
+> the image from the server is publically accessible - you should at least
+> change the ngrok server URL in:
+> - server/package.json
+> - webxr-client/src/whisperhook.tsx
+
 Then go to https://www.oculus.com/casting and copy and paste the content from
 [oculus_cast_hack.js] into the JS console.
 
+Now when you want to script to be able to see, change the `enableOculusHack`
+option for `useWhispherChat` to `true`.
 
 ## Web client setup
 

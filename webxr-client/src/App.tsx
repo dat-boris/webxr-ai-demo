@@ -4,10 +4,11 @@ import { createXRStore, XR } from '@react-three/xr'
 import { Text } from '@react-three/drei'
 import { useWhispherChat } from './whisperhook'
 
-const xrStore = createXRStore();
+// Disable hand tracking
+const xrStore = createXRStore({ hand: false });
 
 function App() {
-  const { startMediaRecording, stopMediaRecording, recordedText, chatReply, isProcessing } = useWhispherChat({
+  const { startMediaRecording, stopMediaRecording, recordedText, chatReply, isRecording, isProcessing } = useWhispherChat({
     "enableOculusHack": false,
   });
 
@@ -22,7 +23,7 @@ function App() {
           onPointerUp={() => stopMediaRecording()}
           >
             <sphereGeometry args={[1, 32, 32]} />
-            <meshStandardMaterial color={isProcessing ? "orange" : "blue"} />
+            <meshStandardMaterial color={isRecording ? "orange" : isProcessing ? "yellow" : "blue"} />
             <Text position={[0, -2, 0]} fontSize={0.5} color="white" maxWidth={10} lineHeight={1.2} anchorY="top">
               {chatReply}
             </Text>
