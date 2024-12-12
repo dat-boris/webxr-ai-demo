@@ -8,8 +8,10 @@ import { useWhispherChat } from './whisperhook'
 const xrStore = createXRStore({ hand: false });
 
 function App() {
-  const { startMediaRecording, stopMediaRecording, recordedText, chatReply, isRecording, isProcessing } = useWhispherChat({
-    "enableOculusHack": false,
+  const {
+    startMediaRecording, stopMediaRecording, recordedText, chatReply, isRecording, isProcessing
+  } = useWhispherChat({
+    "enableOculusHack": true,
   });
 
   return (
