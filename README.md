@@ -6,6 +6,9 @@ A demo to show how to build a WebXR experiences.
 
 ## Getting started
 
+### Running client server
+
+Then run the client server
 ```
 cd webxr-client
 npm run dev
@@ -17,9 +20,32 @@ And then open the URL to your local host:
 https://localhost:5173/?ok=<OpenAI APIkey>
 ```
 
-CAREFUL! This key is NOT securied as it is held in your browser. Generate it one off for demo at
-https://platform.openai.com/settings/organization/api-keys
-and remove it afterwards.
+> [!WARNING]
+> This key is NOT securied as it is held in your browser. Generate it one off
+> for demo at https://platform.openai.com/settings/organization/api-keys
+> and remove it afterwards.
+
+### (optional) For Vision capability
+
+> Only avaliable if you are using Oculus Quest
+
+> [!WARNING]
+> the image from the server is publically accessible - you should at least
+> change the ngrok server URL in:
+> - server/package.json
+> - webxr-client/src/whisperhook.tsx
+
+Open your local server by:
+
+```
+cd server
+node server.js
+```
+
+Which will run the local server.
+
+Then go to https://www.oculus.com/casting and copy and paste the content from
+[oculus_cast_hack.js] into the JS console.
 
 
 ## Web client setup

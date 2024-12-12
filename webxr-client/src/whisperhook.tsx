@@ -9,6 +9,10 @@ const getOpenAIKey = () => {
   return apiKey;
 }
 
+// This is the URL of the image which OpenAI will read from - and needs to be publicly available.
+// see `server/package.json:ngrok` for the domain.
+const ImageUrl = "https://webxrdemo.ngrok.dev/image";
+
 export function useWhispherChat() {
     const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
