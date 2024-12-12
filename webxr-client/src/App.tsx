@@ -1,11 +1,13 @@
-import { useState } from 'react'
 import './App.css'
 import { Canvas } from '@react-three/fiber'
 import { createXRStore, XR } from '@react-three/xr'
+import { useWhispherChat } from './whisperhook'
 
 const xrStore = createXRStore();
 
 function App() {
+  const { startMediaRecording, stopMediaRecording, recordedText } = useWhispherChat();
+
   return (
     <>
       <Canvas>
@@ -19,6 +21,11 @@ function App() {
       </Canvas>
       <h1>A simple WebXR demo.</h1>
       <button onClick={() => xrStore.enterAR()}>Enter AR</button>
+      <div>
+        <button onClick={() => startMediaRecording()}>Start Recording</button>
+        <button onClick={() => stopMediaRecording()}>Stop</button>
+        <pre>{recordedText}</pre>
+      </div>
     </>
   )
 }
