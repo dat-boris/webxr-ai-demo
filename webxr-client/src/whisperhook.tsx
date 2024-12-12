@@ -14,6 +14,7 @@ export function useWhispherChat() {
     const audioChunksRef = useRef<Blob[]>([]);
     const [recordedText, setRecordedText] = useState<string>('');
     const [chatReply, setChatReply] = useState<string>('');
+    const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
     const chatWithGPT = async (message: string) => {
       const apiKey = getOpenAIKey();
@@ -33,10 +34,12 @@ export function useWhispherChat() {
 
       try {
         const result = await response.json();
+        setIsProcessing(false);
         setChatReply(result.choices[0].message.content);
         return result.choices[0].message.content;
       } catch (error) {
         console.error('Failed to fetch chat reply', error);
+        setIsProcessing(false);
         setChatReply(`Error: ${error}`);
         return '';
       }
@@ -62,6 +65,11 @@ export function useWhispherChat() {
     };
 
     const startMediaRecording = async () => {
+      if (isProcessing) {
+        console.log('Already processing audio');
+        return;
+      }
+      setIsProcessing(true);
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const recorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
 
@@ -92,6 +100,7 @@ export function useWhispherChat() {
       startMediaRecording,
       stopMediaRecording,
       recordedText,
-      chatReply
+      chatReply,
+      isProcessing
     }
 }

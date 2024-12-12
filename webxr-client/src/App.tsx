@@ -7,17 +7,21 @@ import { useWhispherChat } from './whisperhook'
 const xrStore = createXRStore();
 
 function App() {
-  const { startMediaRecording, stopMediaRecording, recordedText, chatReply } = useWhispherChat();
+  const { startMediaRecording, stopMediaRecording, recordedText, chatReply, isProcessing } = useWhispherChat();
 
   return (
     <>
       <Canvas>
         <XR store={xrStore}>
         <directionalLight color="white" position={[0, 0, 5]} />
-        <mesh position={[0, 0, -10]}>
+        <mesh
+          position={[0, 3, -10]}
+          onPointerDown={() => startMediaRecording()}
+          onPointerUp={() => stopMediaRecording()}
+          >
             <sphereGeometry args={[1, 32, 32]} />
-            <meshStandardMaterial color="blue" />
-            <Text position={[0, -2, 0]} fontSize={1} color="white">
+            <meshStandardMaterial color={isProcessing ? "orange" : "blue"} />
+            <Text position={[0, -2, 0]} fontSize={0.5} color="white" maxWidth={10} lineHeight={1.2} anchorY="top">
               {chatReply}
             </Text>
         </mesh>
